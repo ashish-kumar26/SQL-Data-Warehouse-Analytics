@@ -1,0 +1,53 @@
+/*
+2. Monthly Sales with Running Totals
+Purpose:
+  Track cumulative sales growth and pricing behavior over time.
+
+Key Features:
+  ● Monthly total sales
+  ● Running total of sales
+  ● Running average price
+  ● Highlights long-term growth patterns
+*/
+
+SELECT 
+    order_month,
+    total_sales,
+    SUM(total_sales) OVER (ORDER BY order_month) AS running_total_sales,
+    ROUND(AVG(avg_price) OVER (ORDER BY order_month),0) AS running_avg_price
+FROM (
+    SELECT
+        DATE(DATE_TRUNC('month', order_date)) AS order_month,
+        SUM(sales_amount) AS total_sales,
+        AVG(price) AS avg_price
+    FROM gold.fact_sales
+    WHERE order_date IS NOT NULL
+    GROUP BY DATE(DATE_TRUNC('month', order_date))
+) t
+ORDER BY order_month;/*
+2. Monthly Sales with Running Totals
+Purpose:
+  Track cumulative sales growth and pricing behavior over time.
+
+Key Features:
+  ● Monthly total sales
+  ● Running total of sales
+  ● Running average price
+  ● Highlights long-term growth patterns
+*/
+
+SELECT 
+    order_month,
+    total_sales,
+    SUM(total_sales) OVER (ORDER BY order_month) AS running_total_sales,
+    ROUND(AVG(avg_price) OVER (ORDER BY order_month),0) AS running_avg_price
+FROM (
+    SELECT
+        DATE(DATE_TRUNC('month', order_date)) AS order_month,
+        SUM(sales_amount) AS total_sales,
+        AVG(price) AS avg_price
+    FROM gold.fact_sales
+    WHERE order_date IS NOT NULL
+    GROUP BY DATE(DATE_TRUNC('month', order_date))
+) t
+ORDER BY order_month;
